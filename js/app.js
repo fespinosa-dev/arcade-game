@@ -20,10 +20,10 @@ var Enemy = function(speed = 1, y = 60) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-     this.x += this.speed;
-     if(this.x > 530){
-         this.x = 0;
-     }
+    //  this.x += this.speed;
+    //  if(this.x > 530){
+    //      this.x = 0;
+    //  }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -38,7 +38,7 @@ Enemy.prototype.render = function() {
 class Player {
     constructor(){
         this.x = 200;
-        this.y = 400;
+        this.y = 370;
         this.sprite = 'images/char-boy.png';
     }
     
@@ -51,8 +51,28 @@ class Player {
     }
 
     handleInput(key){
-            console.log(key);
+        this._move(key);
+        console.log(this.y)
     }
+
+    _move(key){
+        switch (key) {
+            case "up":
+                this.y -= 80;
+                break;
+            case "down":
+                this.y += 80;
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    _checkBoundry(){
+       
+    }
+    
 }
 
 // Now write your own player class
