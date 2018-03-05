@@ -20,10 +20,10 @@ var Enemy = function(speed = 1, y = 60) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    //  this.x += this.speed;
-    //  if(this.x > 530){
-    //      this.x = 0;
-    //  }
+     this.x += this.speed;
+     if(this.x > 530){
+         this.x = 0;
+     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -51,27 +51,54 @@ class Player {
     }
 
     handleInput(key){
-        this._move(key);
-        console.log(this.y)
-    }
-
-    _move(key){
         switch (key) {
             case "up":
-                this.y -= 80;
+                    this.moveUp();
                 break;
             case "down":
-                this.y += 80;
+                    this.moveDown();
                 break;
-        
+            case "right":
+                    this.moveRight();
+                break;
+            case "left":
+                    this.moveLeft();
+                break;
             default:
                 break;
         }
     }
 
-    _checkBoundry(){
-       
+    moveUp(){
+        if (this.y === boundaries.UP) {
+           return;
+        }
+        this.y -= 80;
     }
+
+    moveDown(){
+        if (this.y === boundaries.DOWN) {
+            return;
+        }
+        this.y += 80;
+    }
+
+    moveLeft(){
+        if (this.x === boundaries.LEFT) {
+            return;
+        }
+        this.x -= 100;
+    }
+
+    moveRight(){
+        if (this.x === boundaries.RIGHT) {
+            return;
+        }
+        this.x += 100;
+    }
+
+
+
     
 }
 

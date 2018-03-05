@@ -177,9 +177,11 @@ var Engine = (function(global) {
     ]);
     Resources.onReady(init);
 
-    /* Assign the canvas' context object to the global variable (the window
+    /* Assign the canvas' context object and canvas' boundaries to the global variable  (the window
      * object when run in a browser) so that developers can use it more easily
      * from within their app.js files.
      */
     global.ctx = ctx;
+    global.boundaries = { LEFT: 0, RIGHT: 400, UP: -30, DOWN: 370 };
+
 })(this);
