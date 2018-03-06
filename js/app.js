@@ -1,25 +1,14 @@
 // Enemies our player must avoid
+class Enemy {
+    constructor(speed = 1, y = 83){
+        this.x = 0;
+        this.y = y;
+        this.speed = speed;
 
-var Enemy = function(speed = 1, y = 60) {
-    this.x = 0;
-    this.y = y;
-    this.speed = speed;
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+        this.sprite = 'images/enemy-bug.png'; 
+    }
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png'; 
-    
-};
-
-//60
-// 140
-// 220
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+    update(dt){
      this.x += this.speed;
      if(this.x > 530){
          this.x = 0;
@@ -27,13 +16,14 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-};
+    }
 
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+
+    render(){
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+}
 
 class Player {
     constructor(){
@@ -43,11 +33,24 @@ class Player {
     }
     
     update(){
-        
+       this.checkCollisions();
     }
 
     render(){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
+
+    checkCollisions() {
+   
+        allEnemies.forEach(enemy =>{
+
+            if ((this.x - enemy.x) === 25){
+         }
+
+        });
+
+        
+
     }
 
     handleInput(key){
@@ -67,6 +70,7 @@ class Player {
             default:
                 break;
         }
+
     }
 
     moveUp(){
@@ -106,7 +110,7 @@ class Player {
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var enemy1 = new Enemy(1,60);
+var enemy1 = new Enemy(5,60);
 var enemy3 = new Enemy(3,140);
 var enemy2 = new Enemy(5,220);
 var allEnemies = [enemy1, enemy2, enemy3];
