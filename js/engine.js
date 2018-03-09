@@ -63,7 +63,6 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
         lastTime = Date.now();
         main();
     }
@@ -162,7 +161,12 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        allEnemies.forEach(function (enemy) {
+            enemy.reset();
+        });
+        player.reset();
+        
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -174,7 +178,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Selector.png'
     ]);
     Resources.onReady(init);
 
@@ -183,6 +188,7 @@ var Engine = (function(global) {
      * from within their app.js files.
      */
     global.ctx = ctx;
+    global.resetGame = reset;
     global.boundaries = { LEFT: 0, RIGHT: 400, UP: -30, DOWN: 370 };
 
 })(this);
