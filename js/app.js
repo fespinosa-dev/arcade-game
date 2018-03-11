@@ -37,9 +37,7 @@ class Enemy {
         let pP = this.y - player.y;
         let distance = Math.sqrt(((Math.pow(eP, 2)) + (Math.pow(pP, 2))))
         if (distance <= 60) {
-            updateScoreBanner(0);
-            resetGame();
-            
+            resetGame();            
         }
     }
 
@@ -118,8 +116,9 @@ class Player {
                       return;
                 }
                 if (this.reachEnd()) { 
-                    updateScoreBanner(++score);
+                    updateLevelBanner(++level);
                     resetGame();
+                    changeEnemiesSpeed(); // increase difficulty
                 }
                 this.y -= this.speed;
                 break;
@@ -150,14 +149,13 @@ class Player {
 
 
 /**
- * @description Resets the game. Players and Bugs start from its initial positions.
+ * @description Resets the game. Players and enemies start from its initial positions.
  */
 var resetGame = function () {
     allEnemies.forEach(function (enemy) {
         enemy.reset();
     });
     player.reset();
-    score = 0;
 
 }
 
@@ -165,15 +163,25 @@ var resetGame = function () {
 * @description Updates the score banner.
 * @argument score = The score value.
 */
-var updateScoreBanner = function (score) {
+var updateLevelBanner = function (score) {
     let scoreBanner = document.querySelector("h2");
-    scoreBanner.innerHTML = `Your score is: ${score}`;
+    scoreBanner.innerHTML = `Your level is: ${score}`;
 }
 
+/**
+* @description Changes the speed of the enemies ramdomly.
+*/
+var changeEnemiesSpeed = function(){
+    allEnemies.forEach(enemy =>{
+
+       enemy.speed = Math.floor(Math.random() * 400) + 50;
+        
+    });
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method.
-document.addEventListener('keydown', function (e) {
+document.addEventListener('keyup', function (e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -185,11 +193,12 @@ document.addEventListener('keydown', function (e) {
 });
 
 
-var enemy1 = new Enemy(0, 50, 400);
-var enemy2 = new Enemy(0, 150, 200);
+
+var enemy1 = new Enemy(0, 50, 350);
+var enemy2 = new Enemy(0, 150, 250);
 var enemy3 = new Enemy(0, 230, 50);
 var allEnemies = [enemy2, enemy3, enemy1]
 var player = new Player(200, 370, 40);
-var score = 0; 
+var level = 0; 
 
 
