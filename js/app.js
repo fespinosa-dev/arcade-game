@@ -1,40 +1,69 @@
-// Enemies our player must avoid
-
+/**
+ * @description Represents the enemy our player must avoid.
+ * @constructor
+ * @param {number} x - The x coordinate.
+ * @param {number} y - The y coordinate.
+ * @param {number} speed - The speed of the Enemy.
+ */
 class Enemy {
-    constructor(x,y, spped) {
+    constructor(x,y, speed) {
         this.x = x;
         this.y = y;
-        this.spped = spped;
+        this.speed = speed;
 
         this.sprite = 'images/enemy-bug.png';
     }
 
+    /**
+    * @description Update the enemy's position.
+    * @argument dt = The delta information.
+    */
     update(dt) {
-        // var distance = this.spped * dt;
-        //  this.x = this.x + distance;
+        var distance = this.speed * dt;
+         this.x = this.x + distance;
         console.log()
          if(this.x > 530){
              this.x = 0;
          }
 
-        // console.log(" ENEMY - X: " + this.x + " Y: " + this.y);
-
-        // this.checkCollisions();
+        this.checkCollisions();
     }
 
+    /**
+    * @description Checks for collisions with the player if there is any resets the game.
+    */
+    checkCollisions() {
+        let eP = this.x - player.x;
+        let pP = this.y - player.y;
+        let distance = Math.sqrt(((Math.pow(eP, 2)) + (Math.pow(pP, 2))))
+        if (distance <= 60) {
+            updateScoreBanner(0);
+            resetGame();
+            
+        }
+    }
 
-   
-
+    /**
+     * @description Resets to initial position.
+     */
     reset() {
         this.x = 0;
 
     }
-
+    /**
+     * @description Draw the enemy on the screen.
+     */
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 }
-
+/**
+ * @description Represents the player.
+ * @constructor
+ * @param {number} x - The x coordinate.
+ * @param {number} y - The y coordinate.
+ * @param {number} speed - The speed of the Player.
+ */
 class Player {
     constructor(x, y, speed) {
         this.x = x;
@@ -42,103 +71,109 @@ class Player {
         this.speed = speed;
         this.sprite = 'images/char-boy.png';
     }
-
+    
+    /**
+    * @description Update the player's position.
+    */
     update(dt) {
         this.distance = this.x * dt;
     }
 
+    /**
+     * @description Draw the player on the screen.
+     */
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
+    /**
+     * @description Resets to initial position.
+     */
     reset() {
         this.x = 200;
         this.y = 370;
     }
 
+    /**
+     * @description Checks whether the player reached the end or not.
+     * @return {boolean} - true or false
+     */
+    reachEnd(){
+        if(this.y <= 10){
+            return true;
+        }
+        return false;
+    }
+    
 
+
+    /**
+     * @description Handles input events from the user.
+     * @param {string} key - the keyword name the user pressed.
+     */
     handleInput(key) {
-        switch (key) {
+          switch (key) {  
             case "up":
-                this.moveUp();
+                if (this.y === -30) {
+                      return;
+                }
+                if (this.reachEnd()) { 
+                    updateScoreBanner(++score);
+                    resetGame();
+                }
+                this.y -= this.speed;
                 break;
             case "down":
-                this.moveDown();
+                  if (this.y === 370) {
+                      return;
+                  }
+                this.y += this.speed;
                 break;
             case "right":
-                this.moveRight();
+                  if (this.x === 400) {
+                      return;
+                  }
+                this.x += this.speed;
                 break;
             case "left":
-                this.moveLeft();
+                  if (this.x === 0) {
+                      return;
+                  }
+                this.x -= this.speed;
                 break;
-            default:
    }
-        this.checkCollisions();
     }
-
-    moveUp() {
-        if (this.y === boundaries.UP) {
-            return;
-        }
-        this.y -= this.speed;
-    }
-
-    moveDown() {
-        if (this.y === boundaries.DOWN) {
-            return;
-        }
-        this.y += this.speed;
-    }
-
-    moveLeft() {
-        if (this.x === boundaries.LEFT) {
-            return;
-        }
-        this.x -= this.speed;
-    }
-
-    moveRight() {
-        if (this.x === boundaries.RIGHT) {
-            return;
-        }
-        this.x += this.speed;
-    }
-
-
-    checkCollisions() {
-
-        let eP = enemy2.x - player.x;
-        let pP = enemy2.y - player.y;
-        let result = Math.sqrt(((Math.pow(eP, 2)) + (Math.pow(pP, 2))))
-        console.log(result);
-        if (result >= 2 && result <= 10) {
-            console.log("collide!");
-        }
-    }
-
 
 
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method. 
-
-var enemy1 = new Enemy(0, 5, 40);
-var enemy3 = new Enemy(100, 3, 200);
-var enemy2 = new Enemy(50, 100, 1);
-var allEnemies = [enemy2];
-var player = new Player(200,370,60);
 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+/**
+ * @description Resets the game. Players and Bugs start from its initial positions.
+ */
+var resetGame = function () {
+    allEnemies.forEach(function (enemy) {
+        enemy.reset();
+    });
+    player.reset();
+    score = 0;
+
+}
+
+/**
+* @description Updates the score banner.
+* @argument score = The score value.
+*/
+var updateScoreBanner = function (score) {
+    let scoreBanner = document.querySelector("h2");
+    scoreBanner.innerHTML = `Your score is: ${score}`;
+}
 
 
 // This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function (e) {
+// Player.handleInput() method.
+document.addEventListener('keydown', function (e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -148,3 +183,13 @@ document.addEventListener('keyup', function (e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+
+var enemy1 = new Enemy(0, 50, 400);
+var enemy2 = new Enemy(0, 150, 200);
+var enemy3 = new Enemy(0, 230, 50);
+var allEnemies = [enemy2, enemy3, enemy1]
+var player = new Player(200, 370, 40);
+var score = 0; 
+
+

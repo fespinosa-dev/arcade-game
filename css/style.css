@@ -1,4 +1,31 @@
 body {
     text-align: center;
-    
+    background: linear-gradient(90deg, #4b985c, #fffffb);
+}
+
+h1{
+    font-family: "Cabin Sketch", cursive;
+    font-size: 50px;
+    color:#0e5818;
+}
+
+h2{
+    color: #00000099;
+}
+
+.score-banner{
+    margin: auto;
+    width: 180px;
+    border-width: 3px;
+    border-style: solid;
+    -webkit-border-image: 
+      -webkit-gradient(linear, 0 0, 0 100%, from(black), to(rgba(0, 0, 0, 0))) 1 100%;
+    -webkit-border-image: 
+      -webkit-linear-gradient(black, rgba(0, 0, 0, 0)) 1 100%;
+    -moz-border-image:
+      -moz-linear-gradient(black, rgba(0, 0, 0, 0)) 1 100%;    
+    -o-border-image:
+      -o-linear-gradient(black, rgba(0, 0, 0, 0)) 1 100%;
+    border-image:
+      linear-gradient(to bottom, black, rgba(0, 0, 0, 0)) 1 100%;
 }
