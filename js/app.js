@@ -37,6 +37,8 @@ class Enemy {
         let pP = this.y - player.y;
         let distance = Math.sqrt(((Math.pow(eP, 2)) + (Math.pow(pP, 2))))
         if (distance <= 60) {
+            updateScoreBanner(0);
+            score = 0;
             resetGame();            
         }
     }
@@ -116,7 +118,7 @@ class Player {
                       return;
                 }
                 if (this.reachEnd()) { 
-                    updateLevelBanner(++level);
+                    updateScoreBanner(++score);
                     resetGame();
                     changeEnemiesSpeed(); // increase difficulty
                 }
@@ -163,9 +165,9 @@ var resetGame = function () {
 * @description Updates the score banner.
 * @argument score = The score value.
 */
-var updateLevelBanner = function (score) {
+var updateScoreBanner = function (score) {
     let scoreBanner = document.querySelector("h2");
-    scoreBanner.innerHTML = `Your level is: ${score}`;
+    scoreBanner.innerHTML = `Your score is: ${score}`;
 }
 
 /**
@@ -199,6 +201,6 @@ var enemy2 = new Enemy(0, 150, 250);
 var enemy3 = new Enemy(0, 230, 50);
 var allEnemies = [enemy2, enemy3, enemy1]
 var player = new Player(200, 370, 40);
-var level = 0; 
+var score = 0; 
 
 
