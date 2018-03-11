@@ -6,32 +6,28 @@
  * @param {number} speed - The speed of the Enemy.
  */
 class Enemy {
-    constructor(x,y, speed) {
+    constructor(x, y, speed) {
         this.x = x;
         this.y = y;
         this.speed = speed;
-
         this.sprite = 'images/enemy-bug.png';
     }
-
-    /**
-    * @description Update the enemy's position.
-    * @argument dt = The delta information.
-    */
+	/**
+	 * @description Update the enemy's position.
+	 * @argument dt = The delta information.
+	 */
     update(dt) {
         var distance = this.speed * dt;
-         this.x = this.x + distance;
+        this.x = this.x + distance;
         console.log()
-         if(this.x > 530){
-             this.x = 0;
-         }
-
+        if (this.x > 530) {
+            this.x = 0;
+        }
         this.checkCollisions();
     }
-
-    /**
-    * @description Checks for collisions with the player if there is any resets the game.
-    */
+	/**
+	 * @description Checks for collisions with the player if there is any resets the game.
+	 */
     checkCollisions() {
         let eP = this.x - player.x;
         let pP = this.y - player.y;
@@ -39,20 +35,18 @@ class Enemy {
         if (distance <= 60) {
             updateScoreBanner(0);
             score = 0;
-            resetGame();            
+            resetGame();
         }
     }
-
-    /**
-     * @description Resets to initial position.
-     */
+	/**
+	 * @description Resets to initial position.
+	 */
     reset() {
         this.x = 0;
-
     }
-    /**
-     * @description Draw the enemy on the screen.
-     */
+	/**
+	 * @description Draw the enemy on the screen.
+	 */
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
@@ -71,53 +65,46 @@ class Player {
         this.speed = speed;
         this.sprite = 'images/char-boy.png';
     }
-    
-    /**
-    * @description Update the player's position.
-    */
+	/**
+	 * @description Update the player's position.
+	 */
     update(dt) {
         this.distance = this.x * dt;
     }
-
-    /**
-     * @description Draw the player on the screen.
-     */
+	/**
+	 * @description Draw the player on the screen.
+	 */
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
-
-    /**
-     * @description Resets to initial position.
-     */
+	/**
+	 * @description Resets to initial position.
+	 */
     reset() {
         this.x = 200;
         this.y = 370;
     }
-
-    /**
-     * @description Checks whether the player reached the end or not.
-     * @return {boolean} - true or false
-     */
-    reachEnd(){
-        if(this.y <= 10){
+	/**
+	 * @description Checks whether the player reached the end or not.
+	 * @return {boolean} - true or false
+	 */
+    reachEnd() {
+        if (this.y <= 10) {
             return true;
         }
         return false;
     }
-    
-
-
-    /**
-     * @description Handles input events from the user.
-     * @param {string} key - the keyword name the user pressed.
-     */
+	/**
+	 * @description Handles input events from the user.
+	 * @param {string} key - the keyword name the user pressed.
+	 */
     handleInput(key) {
-          switch (key) {  
+        switch (key) {
             case "up":
                 if (this.y === -30) {
-                      return;
+                    return;
                 }
-                if (this.reachEnd()) { 
+                if (this.reachEnd()) {
                     updateScoreBanner(++score);
                     resetGame();
                     changeEnemiesSpeed(); // increase difficulty
@@ -125,31 +112,26 @@ class Player {
                 this.y -= this.speed;
                 break;
             case "down":
-                  if (this.y === 370) {
-                      return;
-                  }
+                if (this.y === 370) {
+                    return;
+                }
                 this.y += this.speed;
                 break;
             case "right":
-                  if (this.x === 400) {
-                      return;
-                  }
+                if (this.x === 400) {
+                    return;
+                }
                 this.x += this.speed;
                 break;
             case "left":
-                  if (this.x === 0) {
-                      return;
-                  }
+                if (this.x === 0) {
+                    return;
+                }
                 this.x -= this.speed;
                 break;
-   }
+        }
     }
-
-
 }
-
-
-
 /**
  * @description Resets the game. Players and enemies start from its initial positions.
  */
@@ -158,29 +140,23 @@ var resetGame = function () {
         enemy.reset();
     });
     player.reset();
-
 }
-
 /**
-* @description Updates the score banner.
-* @argument score = The score value.
-*/
+ * @description Updates the score banner.
+ * @argument score = The score value.
+ */
 var updateScoreBanner = function (score) {
     let scoreBanner = document.querySelector("h2");
     scoreBanner.innerHTML = `Your score is: ${score}`;
 }
-
 /**
-* @description Changes the speed of the enemies ramdomly.
-*/
-var changeEnemiesSpeed = function(){
-    allEnemies.forEach(enemy =>{
-
-       enemy.speed = Math.floor(Math.random() * 400) + 50;
-        
+ * @description Changes the speed of the enemies ramdomly.
+ */
+var changeEnemiesSpeed = function () {
+    allEnemies.forEach(enemy => {
+        enemy.speed = Math.floor(Math.random() * 400) + 50;
     });
 }
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method.
 document.addEventListener('keyup', function (e) {
@@ -190,17 +166,11 @@ document.addEventListener('keyup', function (e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-
-
 var enemy1 = new Enemy(0, 50, 350);
 var enemy2 = new Enemy(0, 150, 250);
 var enemy3 = new Enemy(0, 230, 50);
 var allEnemies = [enemy2, enemy3, enemy1]
 var player = new Player(200, 370, 40);
-var score = 0; 
-
-
+var score = 0;
